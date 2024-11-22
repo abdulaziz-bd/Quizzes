@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import ErrorImg from "../../assets/error.png";
 import { useAuth } from "../../hooks/useAuth";
 import { useQuizSet } from "../../hooks/useQuizSet";
 import { fetchQuizSets } from "../../redux/features/quizSet/quizSetSlice";
@@ -15,12 +16,29 @@ export default function QuizList() {
   }, [dispatch, auth]);
 
   if (loading) {
-    return <div>Loading quizzes...</div>;
+    return (
+      <div className="text-center py-8 text-gray-600">
+        Loading quizzes... Please wait
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div>Error: {typeof error === "string" ? error : error.message}</div>
+      <div className="text-center py-8 min-h-[200px] flex flex-col items-center">
+        <img
+          src={ErrorImg}
+          alt="Server Error"
+          className="w-[100px] h-[100px] mb-4"
+        />
+        <div className="text-red-500 mb-2 text-xl">
+          Unable to load quizzes at this time
+        </div>
+        <div className="text-gray-600 text-lg">
+          Please check your internet connection and try again. If the problem
+          persists, the server might be temporarily unavailable.
+        </div>
+      </div>
     );
   }
 
@@ -35,7 +53,9 @@ export default function QuizList() {
           ))}
         </div>
       ) : (
-        <div>No quizzes available</div>
+        <div className="text-center py-8 text-gray-600">
+          No quizzes are available at the moment
+        </div>
       )}
     </section>
   );
