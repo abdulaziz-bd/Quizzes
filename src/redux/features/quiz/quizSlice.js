@@ -26,7 +26,7 @@ export const submitQuizAttempt = createAsyncThunk(
         `${import.meta.env.VITE_SERVER_BASE_URL}/quizzes/${quizId}/attempt`,
         { answers: { ...answers } }
       );
-      
+
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -57,6 +57,9 @@ const quizSlice = createSlice({
         ...state.quizAnswers,
         [question_id]: answer,
       };
+    },
+    resetQuizAnswers: (state) => {
+      state.quizAnswers = {};
     },
   },
   extraReducers: (builder) => {
@@ -91,7 +94,8 @@ const quizSlice = createSlice({
 });
 
 // Actions
-export const { resetQuizState, updateQuizAnswer } = quizSlice.actions;
+export const { resetQuizState, updateQuizAnswer, resetQuizAnswers } =
+  quizSlice.actions;
 
 // Reducer
 export default quizSlice.reducer;

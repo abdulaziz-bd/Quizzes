@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useQuizSetList } from "../../../hooks/useQuizSetList";
+
 import {
   createQuizQuestion,
   resetQuestionSetToEdit,
@@ -64,7 +66,9 @@ export default function QuestionEntryForm() {
   const submitForm = async (formData) => {
     // Check if a correct answer is selected
     if (selectedOption === null) {
-      alert("Please select a correct answer");
+      toast.error("Please select a correct answer", {
+        position: "top-right",
+      });
       return;
     }
 
@@ -80,7 +84,9 @@ export default function QuestionEntryForm() {
     };
 
     if (questionSetToEdit == null && quizSet?.status === "published") {
-      alert("Cannot add question to a published quiz");
+      toast.error("Cannot add question to a published quiz", {
+        position: "top-right",
+      });
       clearForm();
       return;
     }
@@ -146,7 +152,9 @@ export default function QuestionEntryForm() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold text-foreground">Create Quiz</h2>
+      <h2 className="text-xl font-bold text-foreground">
+        Create Quiz Questions
+      </h2>
 
       <form onSubmit={handleSubmit(submitForm)}>
         <div>

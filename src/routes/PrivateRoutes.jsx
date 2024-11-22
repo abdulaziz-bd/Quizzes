@@ -45,7 +45,7 @@ const PrivateRoutes = () => {
   }
 
   return (
-    <>
+    <div className="bg-[#F5F3FF]">
       {isLeaderboard && (
         <div className="p-4">
           <Header />
@@ -58,7 +58,7 @@ const PrivateRoutes = () => {
         </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

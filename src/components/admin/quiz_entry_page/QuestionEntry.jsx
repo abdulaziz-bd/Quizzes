@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
-import QuestionEntryForm from "./QuestionEntryForm";
+import { toast } from "react-toastify";
 import { updateQuizSet } from "../../../redux/features/quizSetList/quizSetListSlice";
+import QuestionEntryForm from "./QuestionEntryForm";
 
 export default function QuestionEntry({ quizSet }) {
   const dispatch = useDispatch();
@@ -8,11 +9,18 @@ export default function QuestionEntry({ quizSet }) {
   const handleStatus = (status) => {
     if (status === "published") {
       if (quizSet?.Questions?.length < 1) {
-        alert("Please add at least one question to publish the quiz set");
+        toast.error(
+          "Please add at least one question to publish the quiz set",
+          {
+            position: "top-right",
+          }
+        );
         return;
       }
       if (quizSet?.status === "published") {
-        alert("Quiz set is already published");
+        toast.warning("Quiz set is already published", {
+          position: "top-right",
+        });
         return;
       }
 
@@ -21,7 +29,9 @@ export default function QuestionEntry({ quizSet }) {
 
     if (status === "draft") {
       if (quizSet?.status === "draft") {
-        alert("Quiz set is already in draft mode");
+        toast.warning("Quiz set is already in draft mode", {
+          position: "top-right",
+        });
         return;
       }
 
@@ -35,14 +45,14 @@ export default function QuestionEntry({ quizSet }) {
         <h2 className="text-3xl font-bold mb-4">{quizSet?.title}</h2>
         {quizSet.status === "published" ? (
           <button
-            className="rounded-[50px] px-6 py-1 text-white text-2xl round bg-green-700"
+            className="bg-primary text-white text-primary-foreground p-2 mt-4 rounded-md hover:bg-primary/90 transition-colors text-xl"
             onClick={() => handleStatus("draft")}
           >
             UnPublish
           </button>
         ) : (
           <button
-            className="rounded-[50px] px-6 py-1 text-white text-2xl round bg-green-700"
+            className="bg-primary text-white text-primary-foreground px-6 py-2 mt-4 rounded-md hover:bg-primary/90 transition-colors text-xl"
             onClick={() => handleStatus("published")}
           >
             Publish

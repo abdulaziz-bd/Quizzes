@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import TopScoredAttempts from "../components/leaderboard/TopScoredAttempts";
 import UserDetails from "../components/leaderboard/UserDetails";
 import { useAuth } from "../hooks/useAuth";
@@ -20,23 +21,34 @@ export default function LeaderboardPage() {
     document.title = "Leaderboard";
   }, []);
 
+  const userId = useMemo(() => auth?.user?.id, [auth?.user?.id]);
+
   useEffect(() => {
     if (quizId) {
-      dispatch(
-        fetchQuizSetAttempts({ quizSetId: quizId, userId: auth?.user?.id })
-      );
+      const fetchQuizAttempts = async () => {
+        await dispatch(fetchQuizSetAttempts({ quizSetId: quizId, userId }));
+      };
+
+      fetchQuizAttempts();
     }
-  }, [quizId, auth?.user?.id]);
+  }, [quizId, userId]);
 
   useEffect(() => {
-    dispatch(fetchQuiz(quizId));
+    if (quizId) {
+      const fetchNewQuiz = async () => {
+        await dispatch(fetchQuiz(quizId));
+      };
+
+      fetchNewQuiz();
+    }
   }, [quizId]);
 
-  useEffect(() => {
-    if (quiz?.user_attempt?.attempted) {
-      navigate("/", { replace: true });
-    }
-  }, [quiz?.user_attempt?.attempted]);
+  if (!quizId || quiz?.user_attempted?.attempted === false) {
+    toast.error("You have not attempted this quiz yet.", {
+      position: "top-right",
+    });
+    navigate("/");
+  }
 
   const myPosition = studentResults?.findIndex(
     (result) => result.studentId === auth?.user?.id

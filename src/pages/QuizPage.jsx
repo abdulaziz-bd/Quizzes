@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import QuizQuestions from "../components/quiz/QuizQuestions";
 import QuizSetInfo from "../components/quiz/QuizSetInfo";
 import { useQuiz } from "../hooks/useQuiz";
-import { fetchQuiz } from "../redux/features/quiz/quizSlice";
+import { fetchQuiz, resetQuizAnswers } from "../redux/features/quiz/quizSlice";
 
 export default function QuizPage() {
   const params = useParams();
@@ -24,10 +24,12 @@ export default function QuizPage() {
   }, [dispatch, quizSetId]);
 
   useEffect(() => {
-    if (quiz?.user_attempt?.attempted) {
-      navigate("/", { replace: true });
-    }
-  }, [quiz?.user_attempt?.attempted]);
+    dispatch(resetQuizAnswers());
+  }, []);
+
+  if (!quizSetId || quiz?.user_attempted?.attempted === true) {
+    navigate("/");
+  }
 
   if (loading) {
     return (

@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import {
   createQuizSet,
   setEntryPageQuizId,
@@ -34,7 +36,9 @@ export default function QuizSetForm({ quizToUpdate }) {
     if (!quizToUpdate) {
       try {
         await dispatch(createQuizSet(formData)).unwrap();
-
+        toast.success("Quiz added successfully and is in Draft mode!", {
+          position: "top-right",
+        });
         navigate("/admin/quiz-entry-page", { replace: true });
       } catch (err) {
         console.error("Create Quiz failed:", err);
@@ -53,7 +57,9 @@ export default function QuizSetForm({ quizToUpdate }) {
         formData.title === quizToUpdate.title &&
         formData.description === quizToUpdate.description
       ) {
-        alert("No changes made to the quiz set");
+        toast.warning("No changes made to the quiz set", {
+          position: "top-right",
+        });
         return;
       }
 
@@ -66,7 +72,9 @@ export default function QuizSetForm({ quizToUpdate }) {
             status: quizToUpdate.status,
           })
         );
-
+        toast.success("Quiz updated successfully!", {
+          position: "top-right",
+        });
         navigate("/admin/quiz-entry-page", { replace: true });
       } catch (err) {
         console.error("Update Quiz failed:", err);

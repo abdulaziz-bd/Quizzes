@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import {
   deleteQuizQuestion,
   setQuestionSetToEdit,
@@ -14,7 +15,9 @@ export default function QuestionList({ quizSet }) {
 
   const handleDelete = ({ quizId, questionId }) => {
     if (quizSet.status === "published") {
-      window.alert("Cannot delete question from a published quiz");
+      toast.error("Cannot delete question from a published quiz", {
+        position: "top-right",
+      });
       return;
     }
 

@@ -1,10 +1,19 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TempImg from "../../assets/backgrounds/2.jpg";
 import { fontJaro } from "../../utils";
 
 export default function QuizCard({ quiz }) {
   const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (quiz?.is_attempted) {
+      navigate(`/quiz/${quiz.id}/result`);
+    } else {
+      navigate(`/quiz/${quiz.id}`);
+    }
+  };
 
   const handleLeaderboard = (e) => {
     e.preventDefault();
@@ -13,12 +22,12 @@ export default function QuizCard({ quiz }) {
   };
 
   return (
-    <Link
-      to={quiz?.is_attempted ? `/quiz/${quiz.id}/result` : `/quiz/${quiz.id}`}
+    <div
+      onClick={handleClick}
       className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow max-h-[450px] relative group cursor-pointer"
     >
-      <div className="group-hover:scale-105 absolute transition-all text-white  text-center top-1/2 -translate-y-1/2 px-4">
-        <h1 className=" text-5xl" style={fontJaro}>
+      <div className="group-hover:scale-105 absolute transition-all text-white text-center top-1/2 -translate-y-1/2 px-4">
+        <h1 className="text-5xl" style={fontJaro}>
           {quiz?.title || "No title available"}
         </h1>
         <p className="mt-2 text-lg">
@@ -33,7 +42,7 @@ export default function QuizCard({ quiz }) {
             </h1>
             <p
               className="text-center hover:underline cursor-pointer"
-              onClick={(e) => handleLeaderboard(e)}
+              onClick={handleLeaderboard}
             >
               Click to view your leaderboard
             </p>
@@ -42,9 +51,12 @@ export default function QuizCard({ quiz }) {
       )}
       <img
         src={quiz?.thumbnail || TempImg}
-        alt="JavaScript Hoisting"
+        alt={quiz?.title || "Quiz thumbnail"}
         className="w-full h-full object-cover rounded mb-4"
+        onError={(e) => {
+          e.target.src = TempImg;
+        }}
       />
-    </Link>
+    </div>
   );
 }

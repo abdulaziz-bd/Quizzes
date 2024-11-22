@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Logo from "../assets/logo.svg";
 import DecorationSide from "../components/registration/DecorationSide";
 import RegisterForm from "../components/registration/RegisterForm";
 
@@ -16,7 +17,7 @@ export default function Register() {
           <div className="w-full max-w-lg ">
             <h2 className="text-3xl font-bold mb-3 flex gap-2 items-center">
               <span>Welcome to</span>
-              <img src="./assets/logo.svg" className="h-7" />
+              <img src={Logo} className="h-7" />
             </h2>
             <h1 className="text-4xl font-bold mb-6">Sign Up</h1>
 

@@ -83,27 +83,31 @@ export default function QuizQuestions() {
 
   const handleAnswerSelect = (answer) => {
     setSelectedAnswer(answer);
-
-    if (quiz.questions?.length === 1) {
-      dispatch(
-        updateQuizAnswer({
-          question_id: currentQuestion.id,
-          answer: answer,
-        })
-      );
-    }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (selectedAnswer) {
-      dispatch(
+      // First update the current answer
+      const updatedAnswers = {
+        ...quizAnswers,
+        [currentQuestion.id]: selectedAnswer,
+      };
+
+      // Dispatch the update for the current question
+      await dispatch(
         updateQuizAnswer({
           question_id: currentQuestion.id,
           answer: selectedAnswer,
         })
       );
 
-      dispatch(submitQuizAttempt({ quizId: quiz?.id, answers: quizAnswers }));
+      // Submit with the updated answers
+      await dispatch(
+        submitQuizAttempt({
+          quizId: quiz?.id,
+          answers: updatedAnswers,
+        })
+      );
 
       navigate(`/quiz/${quiz.id}/result`);
     }

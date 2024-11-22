@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import WhiteLogo from "../assets/logo-white.svg";
 import QuizAnsweredQuestions from "../components/result/QuizAnsweredQuestions";
 import QuizResultInfo from "../components/result/QuizResultInfo";
@@ -33,11 +34,12 @@ export default function ResultPage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (!quiz?.user_attempt?.attempted) {
-      navigate("/", { replace: true });
-    }
-  }, [quiz?.user_attempt?.attempted]);
+  if (!quizId || quiz?.user_attempted?.attempted === false) {
+    toast.error("You have not attempted this quiz yet.", {
+      position: "top-right",
+    });
+    navigate("/");
+  }
 
   if (loading) {
     return (

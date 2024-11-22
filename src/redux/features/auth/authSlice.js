@@ -62,16 +62,19 @@ export const refreshToken = createAsyncThunk(
   "auth/refreshToken",
   async (_, { getState, rejectWithValue }) => {
     try {
-      const refreshToken = getState().auth.refreshToken;
+      const oldRefreshToken = getState().auth.refreshToken;
+      console.log("old refreshToken: ", oldRefreshToken);
 
       const response = await api.post(
         `${import.meta.env.VITE_SERVER_BASE_URL}/auth/refresh-token`,
-        { refreshToken: refreshToken }
+        { refreshToken: oldRefreshToken }
       );
 
-      const { accessToken, newRefreshToken } = response.data.data;
+      const { accessToken, refreshToken } = response.data.data;
+      console.log("new accessToken: ", accessToken);
+      console.log("new refreshToken: ", refreshToken);
 
-      return { accessToken, refreshToken: newRefreshToken };
+      return { accessToken, refreshToken };
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Token refresh failed"

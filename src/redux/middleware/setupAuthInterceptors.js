@@ -22,7 +22,7 @@ export const setupAuthInterceptors = (store) => {
         originalRequest._retry = true;
 
         try {
-          await store.dispatch(refreshToken()).unwrap();
+          await store.dispatch(refreshToken());
 
           const newToken = store.getState().auth.accessToken;
 
