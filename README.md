@@ -4,7 +4,7 @@ A full-featured quiz application built with React, Redux Toolkit, and Tailwind C
 
 ## 🚀 Demo
 
-[Live Demo](https://quizzes-react.vercel.app)
+[Live Demo](https://quizzes-smoky.vercel.app/)
 
 ## ⚡ Features
 
